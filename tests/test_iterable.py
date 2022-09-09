@@ -1,6 +1,6 @@
 import pytest
 
-from thingamabob.iterable import chunk
+from satchel.iterable import chunk
 
 _params = [
     {"lst_length": 3, "n": 3, "as_list": True, "_expected": 1},
