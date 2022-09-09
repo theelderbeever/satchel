@@ -3,6 +3,10 @@ name = "thingamabob"
 version = "0.0.0-alpha.0"
 description = "thingamabob is that thing or tool that you can't remember what its called but you know you need it. This package is a compendium of pure python functions that don't exist in the std lib but maybe they should?"
 authors = ["Taylor Beever <taybeever@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/theelderbeever/thingamabob"
+repository = "https://github.com/theelderbeever/thingamabob"
 
 [tool.poetry.dependencies]
 python = "^3.6"
