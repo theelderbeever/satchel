@@ -1,0 +1,26 @@
+{
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./tests",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "files.exclude": {
+        "**/*.pyc": {"when": "$(basename).py"},
+        "**/__pycache__": true,
+    },
+    "autoDocstring.docstringFormat": "numpy"
+}
