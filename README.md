@@ -11,5 +11,12 @@ pip install thingamabob
 ## Usage
 
 ```python
-import thingamabob as tbob
+>>> import thingamabob.iterable import chunk
+
+>>> some_list = [1, 2, 3, 4, 5]
+>>> chunk(some_list, 2, "length", True)
+# [[1, 2], [3, 4], [5]]
+
+>>> chunk(some_list, 2, "count", True)
+# [[1, 2, 3], [3, 5]]
 ```
