@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "thingamabob"
+version = "0.0.0-alpha.0"
+description = "thingamabob is that thing or tool that you can't remember what its called but you know you need it. This package is a compendium of pure python functions that don't exist in the std lib but maybe they should?"
+authors = ["Taylor Beever <taybeever@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
