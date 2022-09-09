@@ -3,10 +3,13 @@ authors = ["Taylor Beever <taybeever@gmail.com>"]
 description = "Satchel is a compendium of pure python functions to carry with you and get things done."
 homepage = "https://github.com/theelderbeever/satchel"
 license = "MIT"
-name = "satchel"
+name = "PySatchel"
+packages = [
+  {include = "satchel"},
+]
 readme = "README.md"
 repository = "https://github.com/theelderbeever/satchel"
-version = "0.0.0-alpha.0"
+version = "0.0.0-alpha.1"
 
 [tool.poetry.dependencies]
 python = "^3.8"
