@@ -12,6 +12,7 @@ _params = [
 
 @pytest.mark.parametrize("params", _params)
 def test_chunk_by_length(params):
+    print(params)
     chunks = chunk(
         list(range(params["lst_length"])),
         params["n"],
@@ -23,6 +24,7 @@ def test_chunk_by_length(params):
 
 @pytest.mark.parametrize("params", _params)
 def test_chunk_by_count(params):
+    print(params)
     chunks = chunk(
         list(range(params["lst_length"])),
         params["n"],
