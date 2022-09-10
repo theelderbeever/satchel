@@ -34,13 +34,13 @@ def chunk(
     Parameters
     ----------
     lst : Iterable[T]
-        Iterable to be chunked
+        Iterable to be operated on.
     n : int
         Sets the length of chunks for `mode="length"` or number of chunks for `mode="count"`.
     mode : &quot;length&quot; | &quot;count&quot;, optional
-        Split the iterable in to chunk of length `n` or `n` chunks, by default "length"
+        Split the iterable in to chunk of length `n` or `n` chunks, by default `"length"`
     as_list : bool, optional
-        Return a generator or a fully resolved list of chunks, by default False
+        Return a generator or a fully resolved list of chunks, by default `False`
 
     Returns
     -------
@@ -57,7 +57,18 @@ def chunk(
     ValueError
         If `n<=0`
     ValueError
-        If `mode` is not "length" or "count"
+        If `mode` is not `"length"` or `"count"`
+
+    Examples
+    --------
+    >>> import satchel import chunk
+
+    >>> some_list = [1, 2, 3, 4, 5]
+    >>> chunk(some_list, 2, "length", True)
+    [[1, 2], [3, 4], [5]]
+
+    >>> chunk(some_list, 2, "count", True)
+    [[1, 2, 3], [3, 5]]
     """
     length = {"length": n, "count": -(len(lst) // -n)}.get(mode, None)
     if length is None:
