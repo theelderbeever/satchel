@@ -85,7 +85,9 @@ def groupapply(
         {"label": "b", "val": 2},
     ]
     >>> groupapply(data, "label", "count")
+    {'a': 3, 'b': 2}
     """
+
     if key is None:
         key = _identity
     elif isinstance(key, str):

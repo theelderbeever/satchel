@@ -10,6 +10,8 @@ pip install PySatchel
 
 ## Usage
 
+Sometimes it is useful to split a list into smaller lists to work with.
+
 ```python
 >>> import satchel import chunk
 
@@ -20,6 +22,8 @@ pip install PySatchel
 >>> chunk(some_list, 2, "count", True)
 # [[1, 2, 3], [3, 5]]
 ```
+
+You can also group values and apply a function to the groups.
 
 ```python
 >>> import satchel import groupapply
@@ -39,7 +43,16 @@ pip install PySatchel
     {"label": "b", "val": 6},
     {"label": "b", "val": 3},
 ]
-
 >>> groupapply(data, lambda d: d["label"], lambda l: sum([d["val"] for d in l]))
 # {'a': 15, 'b': 9}
+
+>>> data = [
+    {"label": "a", "val": 1},
+    {"label": "a", "val": 1},
+    {"label": "a", "val": 1},
+    {"label": "b", "val": 2},
+    {"label": "b", "val": 2},
+]
+>>> groupapply(data, "label", "count")
+# {'a': 3, 'b': 2}
 ```
