@@ -10,7 +10,7 @@ def chunk(
     mode: Literal["length", "count"] = "length",
     as_list: bool = True,
 ) -> list[list[T]]:
-    """Return as list"""
+    ...
 
 
 @overload
@@ -20,7 +20,7 @@ def chunk(
     mode: Literal["length", "count"] = "length",
     as_list: bool = False,
 ) -> Generator[list[T], None, None]:
-    """Return as generator"""
+    ...
 
 
 def chunk(
