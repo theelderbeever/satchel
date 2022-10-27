@@ -1,21 +1,20 @@
 from collections import defaultdict
 from functools import partial
 from operator import getitem
-from typing import Callable, Iterable, Literal, TypeVar
+from typing import Any, Callable, Hashable, Iterable, Literal, TypeVar, cast
 
-T = TypeVar("T")
-K = TypeVar("K")
+T = TypeVar("T", bound=dict[Any, Any] | list[Any] | tuple[Any])
+K = TypeVar("K", bound=Hashable)
 R = TypeVar("R")
 
-_apply_methods = {"count": len}
 
+count = cast(Callable[[list[T]], int], len)
 
-def _identity(x: T) -> T:
-    return x
+_apply_methods = {"count": count}
 
 
 def _groupby(it: Iterable[T], key: Callable[[T], K]) -> dict[K, list[T]]:
-    d = defaultdict(list)
+    d: dict[K, list[T]] = defaultdict(list)
     for i in it:
         d[key(i)].append(i)
     return d
@@ -23,9 +22,9 @@ def _groupby(it: Iterable[T], key: Callable[[T], K]) -> dict[K, list[T]]:
 
 def groupapply(
     it: Iterable[T],
-    key: str | Callable[[T], K] = None,
-    apply: Literal["count"] | Callable[[list[T]], R] = None,
-) -> dict[K, R]:
+    key: K | Callable[[T], K] | None = None,
+    apply: Literal["count"] | Callable[[list[T]], R] | None = None,
+) -> dict[K, R | list[T] | int]:
     """Group values in an iterable by a key function then apply a function to the
     resultant list of values in each group.
 
@@ -33,7 +32,7 @@ def groupapply(
     ----------
     it : Iterable[T]
         Iterable of values to be operated on.
-    key : str | Callable[[T], K], optional
+    key : K | Callable[[T], K], optional
         Function to generate a key to group on. Should take an argument of the same type
         as elements of `it` and return a hashable value. A value of `None` is the
         identity function `lambda x: x`. A `str` corresponds to `getitem(T, key)`, by
@@ -45,7 +44,7 @@ def groupapply(
 
     Returns
     -------
-    dict[K, R]
+    dict[K, R | list[T] | int]
         A dictionary with keys matching the return of the key function and values
         matching the return of the apply function.
 
@@ -87,19 +86,26 @@ def groupapply(
     >>> groupapply(data, "label", "count")
     {'a': 3, 'b': 2}
     """
-
     if key is None:
-        key = _identity
+        keyfunc: Callable[[T], K] = lambda x: x  # type: ignore
     elif isinstance(key, str):
-        key = partial(lambda x, k: getitem(x, k), k=key)
+        keyfunc = cast(Callable[[T], K], partial(lambda x, k: getitem(x, k), k=key))
+    elif callable(key):
+        keyfunc = key
+    else:
+        raise ValueError(
+            f"Argument `key` must be a callable or a single value that exists in the internal dictionary. {key=}"
+        )
 
     if apply is None:
-        apply = _identity
+        applyfunc: Callable[[list[T]], int | R | list[T]] = lambda x: x
+    elif isinstance(apply, str) and apply in _apply_methods:
+        applyfunc = _apply_methods[apply]
+    elif callable(apply):
+        applyfunc = apply
+    else:
+        raise ValueError(
+            f"Argument `apply` must be a callable or {list(_apply_methods.keys())}"
+        )
 
-    if isinstance(apply, str):
-        apply = _apply_methods.get(apply, None)
-        if apply is None:
-            raise ValueError(
-                f"Argument `apply` must be a callable or {list(_apply_methods.keys())}"
-            )
-    return {k: apply(g) for k, g in _groupby(it, key).items()}
+    return {k: applyfunc(g) for k, g in _groupby(it, keyfunc).items()}

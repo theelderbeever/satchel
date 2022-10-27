@@ -1,34 +1,14 @@
-from typing import Generator, Iterable, Literal, TypeVar, overload
+from typing import Generator, Iterable, Literal, TypeVar
 
 T = TypeVar("T")
 
 
-@overload
 def chunk(
-    lst: Iterable[T],
-    n: int,
-    mode: Literal["length", "count"] = "length",
-    as_list: bool = True,
-) -> list[list[T]]:
-    ...
-
-
-@overload
-def chunk(
-    lst: Iterable[T],
+    lst: list[T],
     n: int,
     mode: Literal["length", "count"] = "length",
     as_list: bool = False,
-) -> Generator[list[T], None, None]:
-    ...
-
-
-def chunk(
-    lst: Iterable[T],
-    n: int,
-    mode: Literal["length", "count"] = "length",
-    as_list: bool = False,
-) -> Generator[list[T], None, None] | list[list[T]]:
+) -> Iterable[list[T]]:
     """_summary_
 
     Parameters
@@ -44,13 +24,10 @@ def chunk(
 
     Returns
     -------
-    list[list[T]]
-        When `as_list=True` returns a list of chunks.
+    Iterable[list[T]]
+        When `as_list=True` returns a list of chunks. `as_list=False` returns a
+        generator
 
-    Yields
-    ------
-    Generator[list[T]]
-        When `as_list=False` returns a generator of chunks.
 
     Raises
     ------
@@ -76,8 +53,9 @@ def chunk(
 
     if n <= 0:
         raise ValueError("`n` must be greater than 0.")
-    return (
-        (lst[i : i + length] for i in range(0, len(lst), length))
-        if not as_list
-        else [lst[i : i + length] for i in range(0, len(lst), length)]
+    chunked: list[list[T]] | Generator[list[T], None, None] = (
+        lst[i : i + length] for i in range(0, len(lst), length)
     )
+    if as_list:
+        chunked = list(chunked)
+    return chunked

@@ -28,3 +28,14 @@ repos:
     rev: 4.0.1 # pick a git hash / tag to point to
     hooks:
       - id: flake8
+  # Mypy
+  # run locally to ensure
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        types: [python]
+        entry: poetry run mypy satchel
+        language: system
+        always_run: true
+        pass_filenames: false
