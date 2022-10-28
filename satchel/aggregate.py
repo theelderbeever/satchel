@@ -1,9 +1,9 @@
 from collections import defaultdict
 from functools import partial
 from operator import getitem
-from typing import Any, Callable, Hashable, Iterable, Literal, TypeVar, cast
+from typing import Callable, Hashable, Literal, TypeVar, cast
 
-T = TypeVar("T", bound=dict[Any, Any] | list[Any] | tuple[Any])
+T = TypeVar("T")
 K = TypeVar("K", bound=Hashable)
 R = TypeVar("R")
 
@@ -13,7 +13,7 @@ count = cast(Callable[[list[T]], int], len)
 _apply_methods = {"count": count}
 
 
-def _groupby(it: list[T] | Iterable[T], key: Callable[[T], K]) -> dict[K, list[T]]:
+def _groupby(it: list[T], key: Callable[[T], K]) -> dict[K, list[T]]:
     d: dict[K, list[T]] = defaultdict(list)
     for i in it:
         d[key(i)].append(i)
@@ -21,7 +21,7 @@ def _groupby(it: list[T] | Iterable[T], key: Callable[[T], K]) -> dict[K, list[T
 
 
 def groupapply(
-    it: list[T] | Iterable[T],
+    it: list[T],
     key: K | Callable[[T], K] | None = None,
     apply: Literal["count"] | Callable[[list[T]], R] | None = None,
 ) -> dict[K, R | list[T] | int]:
